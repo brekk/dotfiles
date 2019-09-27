@@ -1,36 +1,35 @@
+" pathogen = git x vim = plugins
 execute pathogen#infect()
-
+" oh syntax, oh yes
 syntax on
 
+" add haskell?
 let $PATH = $PATH . ':' . expand('~/.cabal/bin')
 
 " nnoremap <c-z> <nop>
-map <C-z> :NERDTreeToggle<CR>
+" map <C-z> :NERDTreeToggle<CR>
 
+" show line numbers
 set nu
+" 2 spaces over tabs
 set expandtab
 set shiftwidth=2
 set tabstop=2
 set autoindent
 set nosmartindent
+" ignore case
 set ic
+" show a highlight under the cursor line
 set cursorline
-set undofile
+" we use lightline
+set noshowmode
+" set undofile
 
 " FZF
 set rtp+=/usr/local/opt/fzf
 
 " turn off dumb typescript errors in valid JS files
 let g:ale_linters = {'javascript': ['eslint']}
-
-" NERDTrees File highlighting
-function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
- exec 'autocmd filetype nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
- exec 'autocmd filetype nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
-endfunction
-
-call NERDTreeHighlightFile('js', 'red', 'none', 'red', '#151515')
-" call NERDTreeHighlightFile('spec.js', 'green', 'none', 'green', '#151515')
 
 " map ,ic :s/^////g<CR>:let @/ = ""<CR>
 " ,rc doesn't work reliably here:
@@ -46,8 +45,7 @@ let g:markdown_fenced_languages = ['html', 'bash=sh', 'js=javascript']
 
 " for vim-prettier
 " let g:prettier#autoformat = 0
-autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.scss,*.json,*.graphql,*.vue Prettier
-" autocmd BufWritePre *.js,*.jsx,*.mjs,*.css,*.less,*.scss,*.json,*.graphql,*.vue,*.ts PrettierAsync
+autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.scss,*.json,*.graphql,*.vue PrettierAsync
 
 " how annoying
 let g:prettier#config#semi = 'false'
@@ -61,7 +59,7 @@ let g:prettier#config#parser = 'babylon'
 let g:prettier#config#config_precedence = 'prefer-file'
 " always|never|preserve
 " let g:prettier#config#prose_wrap = 'preserve'
-filetype plugin indent on
+" filetype plugin indent on
 
 function! PeelRange(file) range
   let peel = a:firstline.",".a:lastline."w ".a:file
@@ -85,23 +83,6 @@ endfunction
 command! -nargs=1 -range=% Graft :<line1>,<line2>call GraftRange(<f-args>)
 ":1,100Graft src/existingfile.js
 
-"function! PeelRange(file) range
-"  exec a:firstline . ',' . a:lastline . 'w ' . a:file 
-"  exec a:firstline . ',' . a:lastline . 'd'
-"endfunction
-
-"command -nargs=1 -range=% Peel :<line1>,<line2>call PeelRange(<f-args>)
-"":1,100Peel src/newfile.js
-
-"function! GraftRange(file) range
-"  exec a:firstline . ',' . a:lastline . 'w>> ' . a:file 
-"  exec a:firstline . ',' . a:lastline . 'd'
-"endfunction
-
-
-"command -nargs=1 -range=% Graft :<line1>,<line2>call GraftRange(<f-args>)
-"":1,100Graft src/existingfile.js
-
 function! Log(text)
   call append('.', "console.log(" . a:text . ");")
   call append('.', "// tslint:disable-next-line")
@@ -110,7 +91,6 @@ endfunction
 
 " log hook
 " nnoremap log :<C-u>call Log()<CR>
-
 
 " " vim-javascript
 " augroup javascript_folding
@@ -122,9 +102,9 @@ endfunction
 nnoremap jsd :<C-u>call JSDocAdd()<CR>
 
 " set foldmethod=syntax
-" set foldcolumn=1
-" let javaScript_fold=1
-" set foldlevelstart=99
+set foldcolumn=1
+let javaScript_fold=1
+set foldlevelstart=99
 
 " <Leader>f{char} to move to {char}
 map  <Leader>f <Plug>(easymotion-bd-f)
@@ -132,13 +112,6 @@ map  <Leader>f <Plug>(easymotion-bd-f)
 " <Leader>f{char} to move to {char}
 map  <Leader>w <Plug>(easymotion-bd-w)
 
-" tsuquoyomi => TS support
-if !exists("g:ycm_semantic_triggers")
-  let g:ycm_semantic_triggers = {}
-endif
-let g:ycm_semantic_triggers['typescript'] = ['.']
-let g:tsuquyomi_disable_quickfix = 1
-let g:syntastic_typescript_checkers = ['tsuquyomi'] " You shouldn't use 'tsc' checker.
 " learn you some haskell
 let g:brittany_on_save = 1
 " autocmd BufWritePre *.hs Brittany
@@ -147,20 +120,21 @@ let g:brittany_on_save = 1
 " map <silent> tq :GhcModType<CR>
 " map <silent> te :GhcModTypeClear<CR>
 
-autocmd FileType typescript nmap <buffer> <Leader>e <Plug>(TsuquyomiRenameSymbol)
-autocmd FileType typescript nmap <buffer> <Leader>E <Plug>(TsuquyomiRenameSymbolC)
-
 set backspace=indent,eol,start
 
+" RAINBOW LEVELS
+
+" this setting means if everything is a tacit function,
+" only closured stuff is darkened!
 hi! RainbowLevel0 ctermbg=none guibg=#444444
-hi! RainbowLevel1 ctermbg=239 guibg=#383838
-hi! RainbowLevel2 ctermbg=238 guibg=#333333
-hi! RainbowLevel3 ctermbg=237 guibg=#282828
-hi! RainbowLevel4 ctermbg=236 guibg=#222222
-hi! RainbowLevel5 ctermbg=235 guibg=#181818
-hi! RainbowLevel6 ctermbg=234 guibg=#111111
-hi! RainbowLevel7 ctermbg=233 guibg=#080808
-hi! RainbowLevel8 ctermbg=232 guibg=#000000
+hi! RainbowLevel1 ctermbg=232 guibg=#383838
+hi! RainbowLevel2 ctermbg=233 guibg=#333333
+hi! RainbowLevel3 ctermbg=234 guibg=#282828
+hi! RainbowLevel4 ctermbg=235 guibg=#222222
+hi! RainbowLevel5 ctermbg=236 guibg=#181818
+hi! RainbowLevel6 ctermbg=237 guibg=#111111
+hi! RainbowLevel7 ctermbg=238 guibg=#080808
+hi! RainbowLevel8 ctermbg=239 guibg=#000000
 
 " Creating a mapping to turn it on and off:
 map <leader>l :RainbowLevelsToggle<cr>
@@ -169,6 +143,57 @@ map <leader>l :RainbowLevelsToggle<cr>
 au FileType javascript,json,yaml :RainbowLevelsOn
 
 " ###### CoC is a terrible name but it's dope af
+
+" better display for messages
+set cmdheight=2
+" ?
+" set updatetime=300
+" don't give |ins-completion-menu| messages
+set shortmess+=c
+" always show sign columns
+set signcolumn=yes
+
+" keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocActionAsync('doHover')
+  endif
+endfunction
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+" Highlight symbol under cursor on CursorHold
+" autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Remap for rename current word
+nmap <leader>rn <Plug>(coc-rename)
+
+augroup cocstuff 
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocActionAsync('formatSelected')
+  " Update signature help on jump placeholder
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+" Remap for do codeAction of current line
+nmap <leader>ac  <Plug>(coc-codeaction)
+" Fix autofix problem of current line
+nmap <leader>qf  <Plug>(coc-fix-current)
+
+" use `:OR` for organize import of current buffer
+" command! -nargs=0 OR   :call     CocActionAsync('runCommand', 'editor.action.organizeImport')
+
+" Use `:Fold` to fold current buffer
+" command! -nargs=? Fold :call     CocActionAsync('fold', <f-args>)
 
 " use <tab> for trigger completion and navigate to the next complete item
 function! s:check_back_space() abort
@@ -188,27 +213,18 @@ endfunction
 nnoremap <silent> <space>y :<C-u>CocList -A --normal yank<cr>
 
 " Run jest for current project
-command! -nargs=0 Jest :call  CocAction('runCommand', 'jest.projectTest')
+command! -nargs=0 Jest :call  CocActionAsync('runCommand', 'jest.projectTest')
 
 " Run jest for current file
-command! -nargs=0 JestCurrent :call  CocAction('runCommand', 'jest.fileTest', ['%'])
+command! -nargs=0 JestCurrent :call  CocActionAsync('runCommand', 'jest.fileTest', ['%'])
 
 " Run jest for current test
-nnoremap <leader>te :call CocAction('runCommand', 'jest.singleTest')<CR>
+nnoremap <leader>te :call CocActionAsync('runCommand', 'jest.singleTest')<CR>
 
 " Init jest in current cwd, require global jest command exists
-command! JestInit :call CocAction('runCommand', 'jest.init')
+command! JestInit :call CocActionAsync('runCommand', 'jest.init')
 
 " ###### lightline
-function! LightlineFilename()
-  " let root = fnamemodify(get(b:, 'git_dir'), ':h')
-  let root = fnamemodify(get(b:, 'gitbranch_path'), ':h:h')
-  let path = expand('%:p')
-  if path[:len(root)-1] ==# root
-    return path[len(root)+1:]
-  endif
-  return expand('%')
-endfunction
 let g:lightline = {
       \ 'colorscheme': 'wombat',
       \ 'active': {
@@ -218,10 +234,23 @@ let g:lightline = {
       \ 'component_function': {
       \   'cocstatus': 'coc#status',
       \   'currentfunction': 'CocCurrentFunction',
-      \   'gitbranch': 'fugitive#head',
-      \   'filename': 'LightlineFilename'
       \ },
       \ }
 set laststatus=2
 
+" QUICK FIX
+au FileType qf call AdjustWindowHeight(2, 20)
+function! AdjustWindowHeight(minheight, maxheight)
+    let l = 1
+    let n_lines = 0
+    let w_width = winwidth(0)
+    while l <= line('$') && line('$') >= a:maxheight && n_lines is >= a:maxheight
+        " number to float for division
+        let l_len = strlen(getline(l)) + 0.0
+        let line_width = l_len/w_width
+        let n_lines += float2nr(ceil(line_width))
+        let l += 1
+    endw
+    exe max([min([n_lines, a:maxheight]), a:minheight]) . "wincmd _"
+endfunction
 
