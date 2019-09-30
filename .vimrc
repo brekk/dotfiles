@@ -127,14 +127,14 @@ set backspace=indent,eol,start
 " this setting means if everything is a tacit function,
 " only closured stuff is darkened!
 hi! RainbowLevel0 ctermbg=none guibg=#444444
-hi! RainbowLevel1 ctermbg=232 guibg=#383838
-hi! RainbowLevel2 ctermbg=233 guibg=#333333
-hi! RainbowLevel3 ctermbg=234 guibg=#282828
-hi! RainbowLevel4 ctermbg=235 guibg=#222222
-hi! RainbowLevel5 ctermbg=236 guibg=#181818
-hi! RainbowLevel6 ctermbg=237 guibg=#111111
-hi! RainbowLevel7 ctermbg=238 guibg=#080808
-hi! RainbowLevel8 ctermbg=239 guibg=#000000
+hi! RainbowLevel1 ctermbg=239 guibg=#383838
+hi! RainbowLevel2 ctermbg=238 guibg=#333333
+hi! RainbowLevel3 ctermbg=237 guibg=#282828
+hi! RainbowLevel4 ctermbg=236 guibg=#222222
+hi! RainbowLevel5 ctermbg=235 guibg=#181818
+hi! RainbowLevel6 ctermbg=234 guibg=#111111
+hi! RainbowLevel7 ctermbg=233 guibg=#080808
+hi! RainbowLevel8 ctermbg=232 guibg=#000000
 
 " Creating a mapping to turn it on and off:
 map <leader>l :RainbowLevelsToggle<cr>
@@ -254,3 +254,4 @@ function! AdjustWindowHeight(minheight, maxheight)
     exe max([min([n_lines, a:maxheight]), a:minheight]) . "wincmd _"
 endfunction
 
+set history=10000
