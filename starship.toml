@@ -1,0 +1,31 @@
+# don't print a newline at the start of the prompt
+add_newline = false
+
+[package]
+style = "cyan"
+
+[character]
+symbol = '↳ '
+
+[[battery.display]]
+threshold = 20
+style = "bold red"
+
+[[battery.display]]
+threshold = 40
+style = "bold yellow"
+
+[git_branch]
+symbol = "🌱  "
+# symbol = "♆ "
+
+[git_state]
+rebase = "REBASING 😎"
+merging = "MERGING 🥳"
+reverting = "REVERTING 😓"
+progress_divider = "⭄ "
+
+[time]
+style = "magenta"
+disabled = false
+format = "%I:%M%p"

@@ -37,23 +37,25 @@ alias vivify="vi ~/work/dotfiles/.vimrc"
 # the basics
 
 alias ..="cd .."
-alias ll="ls -Algp"
+alias ll="ls -Agplash"
 
 # git
 
 alias gs="git status"
-alias branch="git branch | grep '*' | snang -P \"split(C._), last)\""
+alias branch="git branch | grep '*' | lsnang -P 'split(C._) | last'"
+alias gitpurty="git log --oneline --decorate --graph"
+alias flush="git push --set-upstream origin $branch --force-with-lease"
 
 function figfont
-  figlet -l | snang -P "split(C.n) | filter(I) | z => z[Math.floor(Math.random() * z.length]"
+  figlet -l | lsnang -P "split(C.n) | filter(I) | z => z[Math.floor(Math.random() * z.length)]"
 end
 
 function figtext
-  figfont | snang -P "z => 'figlet -f \'' + z + '\' \'$argv\'' | exec" | lolcat
+  figfont | lsnang -P "z => 'figlet -f \'' + z + '\' \'$argv\'' | exec" | lolcat
 end
 
 function figtest
-  figlet -l | snang -P "split(C.n) | filter(I) | tackOn(z => Math.round((z.length - 1) * Math.random())) | ([l, i]) => l[i] | trace('picked:') | z => 'figlet -f \'' + z + '\' \'$argv\'' | exec" | lolcat
+  figlet -l | lsnang -P "split(C.n) | filter(I) | tackOn(z => Math.round((z.length - 1) * Math.random())) | ([l, i]) => l[i] | trace('picked:') | z => 'figlet -f \'' + z + '\' \'$argv\'' | exec" | lolcat
 end
 
 # z is autojump
@@ -65,6 +67,28 @@ alias cat="bat --tabs=2"
 # ping ping ping
 alias ping="prettyping --nolegend"
 
+# yarn! offline!
+alias jarn='yarn --prefer-offline'
+
 function fish_greeting
-  figtest "javascript"
+  figtest (pwd | lsnang -P "split(C.s) | map(trim) | last")
+end
+
+# let them know you're repping flipmode
+set -gx EDITOR vim
+
+alias tube="ytdl -o '{author.name} - {title}'"
+alias sed="gsed"
+
+alias xx="echo"
+
+# alias cargo="$HOME/.cargo/bin/cargo"
+# alias rustup="$HOME/.cargo/bin/rustup"
+alias knock="~/work/binoculars/binocular.js"
+
+alias wifi="osx-wifi-cli"
+
+alias gpsup="git push -u origin (branch)"
+function nname
+  available $1 -r
 end
