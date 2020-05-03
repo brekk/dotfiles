@@ -71,24 +71,119 @@ alias ping="prettyping --nolegend"
 alias jarn='yarn --prefer-offline'
 
 function fish_greeting
-  figtest (pwd | lsnang -P "split(C.s) | map(trim) | last")
+  figtext (pwd | lsnang -P "split(C.s) | map(trim) | last")
 end
 
 # let them know you're repping flipmode
 set -gx EDITOR vim
 
-alias tube="ytdl -o '{author.name} - {title}'"
 alias sed="gsed"
-
-alias xx="echo"
 
 # alias cargo="$HOME/.cargo/bin/cargo"
 # alias rustup="$HOME/.cargo/bin/rustup"
 alias knock="~/work/binoculars/binocular.js"
 
-alias wifi="osx-wifi-cli"
-
 alias gpsup="git push -u origin (branch)"
 function nname
   available $1 -r
+end
+
+
+# sssshhhhh, it's secure
+# eval (ssh-agent -c)
+
+# if test -z (pgrep ssh-agent)
+#   eval "(ssh-agent -c)" >/dev/null
+#   set -Ux SSH_AUTH_SOCK $SSH_AUTH_SOCK
+#   set -Ux SSH_AGENT_PID $SSH_AGENT_PID
+#   set -Ux SSH_AUTH_SOCK $SSH_AUTH_SOCK
+# end
+fish_ssh_agent
+
+# byobu / tmux
+# set BYOBU_PREFIX /usr/local
+
+# yes captain
+# starship init fish | source
+
+# the fuck
+# thefuck --alias | source
+
+# meta utilities
+if available tmux
+  alias whodat="tmux ls"
+  alias sup="tmux attach -t"
+  alias peace="tmux detach"
+end
+if available bat
+  alias cat="bat --tabs=2"
+end
+if available exa
+  alias ls=exa
+  alias ll='exa --all --long --header --grid --ignore-glob="*.un~|*node_modules|*.git*" --git-ignore'
+else
+  alias ll="ls -Agplash"
+end
+
+alias fishpro="vi ~/.config/fish/config.fish"
+alias fishsource="source ~/.config/fish/config.fish"
+alias fishbat="cat ~/.config/fish/config.fish"
+alias fishgat="cat ~/.config/fish/config.fish | rg"
+alias vivify="vi ~/work/dotfiles/.vimrc"
+
+# old habits die hard
+
+alias ..="cd .."
+
+alias bashpro='fishpro'
+alias bashsource='fishsource'
+alias j="z" # never washed
+
+# ripgrep
+set -x RIPGREP_CONFIG_PATH /Users/bbockrath/.ripgreprc
+
+# inimitable
+
+alias gs="git status"
+alias branch="git branch | grep '*' | snang -P 'split(C._) | last'"
+alias gitpurty="git log --oneline --decorate --graph"
+alias gpsup="git push -u origin (branch)"
+
+# other languages
+
+## javasc-- oh, gross
+set JAVA_HOME /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+
+## why would I ever want an infinite list?
+set GHCUP_INSTALL_BASE_PREFIX = $HOME
+set PATH $HOME/.cabal/bin $PATH
+set PATH $HOME/.ghcup/bin $PATH
+
+## make sure you have tetanus
+source $HOME/.cargo/env
+
+
+# fun
+
+function figfont
+  figlet -l | sort -R | head -1
+end
+
+function figtext
+  figfont | xargs -I{} figlet -f "{}" $argv[1]
+end
+
+function figtest
+  set TEST_FONT (figfont)
+  echo "figlet -f \"$TEST_FONT\" $argv[1]"
+  figlet -f "$TEST_FONT" $argv[1] | lolcat
+end
+
+function fish_greeting
+  figtest (basename (pwd))
+end
+
+function fuckf5
+  sudo cp /etc/hosts ~/hosts.bak
+  sudo cp /etc/hosts-before-stupid-f5 /etc/hosts
 end

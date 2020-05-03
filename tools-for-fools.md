@@ -14,7 +14,12 @@
 - bat
 - thefuck
 - snang
+- byobu
+- tmux
+- vim
 
 ## sometimes
 - figlet
 - lolcat
+
+
