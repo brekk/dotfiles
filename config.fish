@@ -142,3 +142,10 @@ end
 function brb --description 'cd into a directory, execute a command, then cd back.'
   j $argv[1] && eval $argv[2..-1] && cd -
 end
+
+function where
+  find . -iname $argv[1]
+end
+function vhere
+  where $argv[1] | xovi
+end
