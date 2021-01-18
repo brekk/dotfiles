@@ -25,19 +25,19 @@ thefuck --alias | source
 
 # meta utilities
 
-alias bashpro="vi ~/work/dotfiles/config.fish"
+alias bashpro="ni ~/work/dotfiles/config.fish"
 alias bashsource="source ~/work/dotfiles/config.fish"
 alias bashcat="bat ~/.config/fish/config.fish"
 alias bashgat="bat ~/.config/fish/config.fish | rg"
+alias ni="nvim"
+# overthrown
+alias vi="nvim"
 
 # the best editor on the planet
 
-alias vivify="vi ~/work/dotfiles/.vimrc"
-
-# the basics
-
-alias ..="cd .."
-alias ll="ls -Agplash"
+# alias vivify="vi ~/work/dotfiles/.vimrc"
+alias nivify="ni ~/work/dotfiles/nvim-init.vim"
+alias vivify="nivify"
 
 # git
 
@@ -46,36 +46,11 @@ alias branch="git branch | grep '*' | lsnang -P 'split(C._) | last'"
 alias gitpurty="git log --oneline --decorate --graph"
 alias flush="git push --set-upstream origin $branch --force-with-lease"
 
-function figfont
-  figlet -l | lsnang -P "split(C.n) | filter(I) | z => z[Math.floor(Math.random() * z.length)]"
-end
-
-function figtext
-  figfont | lsnang -P "z => 'figlet -f \'' + z + '\' \'$argv\'' | exec" | lolcat
-end
-
-function figtest
-  figlet -l | lsnang -P "split(C.n) | filter(I) | tackOn(z => Math.round((z.length - 1) * Math.random())) | ([l, i]) => l[i] | trace('picked:') | z => 'figlet -f \'' + z + '\' \'$argv\'' | exec" | lolcat
-end
-
-# z is autojump
-alias j='z'
-
-# bat cat with wings
-alias cat="bat --tabs=2"
-
 # ping ping ping
 alias ping="prettyping --nolegend"
 
-# yarn! offline!
-alias jarn='yarn --prefer-offline'
-
-function fish_greeting
-  figtext (pwd | lsnang -P "split(C.s) | map(trim) | last")
-end
-
 # let them know you're repping flipmode
-set -gx EDITOR vim
+set -gx EDITOR nvim
 
 alias sed="gsed"
 
@@ -89,25 +64,6 @@ function nname
 end
 
 
-# sssshhhhh, it's secure
-# eval (ssh-agent -c)
-
-# if test -z (pgrep ssh-agent)
-#   eval "(ssh-agent -c)" >/dev/null
-#   set -Ux SSH_AUTH_SOCK $SSH_AUTH_SOCK
-#   set -Ux SSH_AGENT_PID $SSH_AGENT_PID
-#   set -Ux SSH_AUTH_SOCK $SSH_AUTH_SOCK
-# end
-fish_ssh_agent
-
-# byobu / tmux
-# set BYOBU_PREFIX /usr/local
-
-# yes captain
-# starship init fish | source
-
-# the fuck
-# thefuck --alias | source
 
 # meta utilities
 if available tmux
@@ -116,52 +72,52 @@ if available tmux
   alias peace="tmux detach"
 end
 if available bat
+  alias ccat="cat"
   alias cat="bat --tabs=2"
 end
 if available exa
   alias ls=exa
   alias ll='exa --all --long --header --grid --ignore-glob="*.un~|*node_modules|*.git*" --git-ignore'
+  alias lx='exa --all --long --header --grid --ignore-glob="*.un~|*node_modules"'
 else
   alias ll="ls -Agplash"
 end
 
-alias fishpro="vi ~/.config/fish/config.fish"
+alias fishpro="ni ~/.config/fish/config.fish"
 alias fishsource="source ~/.config/fish/config.fish"
 alias fishbat="cat ~/.config/fish/config.fish"
 alias fishgat="cat ~/.config/fish/config.fish | rg"
-alias vivify="vi ~/work/dotfiles/.vimrc"
 
 # old habits die hard
 
 alias ..="cd .."
 
-alias bashpro='fishpro'
-alias bashsource='fishsource'
-alias j="z" # never washed
+alias bashpro="fishpro"
+alias bashsource="fishsource"
+# alias j="z" # never washed
+function j
+  z $argv[1]
+  pwd
+end
 
 # ripgrep
-set -x RIPGREP_CONFIG_PATH /Users/bbockrath/.ripgreprc
-
-# inimitable
-
-alias gs="git status"
-alias branch="git branch | grep '*' | snang -P 'split(C._) | last'"
-alias gitpurty="git log --oneline --decorate --graph"
-alias gpsup="git push -u origin (branch)"
+set -x RIPGREP_CONFIG_PATH ~/.ripgreprc
 
 # other languages
 
 ## javasc-- oh, gross
-set JAVA_HOME /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+# set JAVA_HOME /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+# ruby
+set PATH usr/local/opt/ruby/bin $PATH
 
 ## why would I ever want an infinite list?
-set GHCUP_INSTALL_BASE_PREFIX = $HOME
+# set GHCUP_INSTALL_BASE_PREFIX = $HOME
 set PATH $HOME/.cabal/bin $PATH
-set PATH $HOME/.ghcup/bin $PATH
+# set PATH $HOME/.ghcup/bin $PATH
+set PATH $HOME/.local/bin $PATH
 
 ## make sure you have tetanus
-source $HOME/.cargo/env
-
+#source $HOME/.cargo/env
 
 # fun
 
@@ -170,7 +126,7 @@ function figfont
 end
 
 function figtext
-  figfont | xargs -I{} figlet -f "{}" $argv[1]
+  figlet -f (figfont) $argv[1]
 end
 
 function figtest
@@ -180,10 +136,50 @@ function figtest
 end
 
 function fish_greeting
-  figtest (basename (pwd))
+  pwd
 end
 
-function fuckf5
-  sudo cp /etc/hosts ~/hosts.bak
-  sudo cp /etc/hosts-before-stupid-f5 /etc/hosts
+alias xovi="xargs -o nvim"
+alias xoni="xargs -o nvim"
+alias yoni="xargs -o nvim"
+
+function crumb
+  tee last-run.log && cat last-run.log
 end
+
+function where
+  find . -iname $argv[1]
+end
+function swhere
+  find . -iname $argv[1] -maxdepth 2
+end
+alias swear=swhere
+function vhere
+  where $argv[1] | xovi
+end
+function fhere
+  echo $argv[1] | xargs rg -l | xovi
+end
+
+function vislow
+  echo "vim rules, except when it sucks"
+  set vimpro ~/work/vim-profiler/vim-profiler.py
+  $vimpro $argv[1]
+end
+
+# inspired by:
+# https://github.com/srid/neuron/blob/master/neuron/src-bash/neuron-search
+function rf --description 'interactive file contents `rg` searching via `fzf`'
+  set match (rg -i --no-heading --no-line-number --with-filename --sort path $argv[1] | fzf)
+  if test $status -eq 0
+    echo $match | awk -F: "{printf \$1}" | xovi
+  end
+end
+
+function gdiff --description 'diff yer shit'
+  git difftool $argv[1] $argv[2] -y
+end
+
+# ghcup-env
+set -q GHCUP_INSTALL_BASE_PREFIX[1]; or set GHCUP_INSTALL_BASE_PREFIX $HOME
+test -f /Users/brekkbockrath/.ghcup/env ; and set -gx PATH $HOME/.cabal/bin /Users/brekkbockrath/.ghcup/bin $PATH

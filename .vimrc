@@ -1,13 +1,72 @@
-" pathogen = git x vim = plugins
-execute pathogen#infect()
+set runtimepath^=~/.vim runtimepath+=~/.vim/after
+
+" use vim-plug instead of pathogen
+call plug#begin('~/.config/nvim/plugins')
+
+" Universal Reset
+Plug 'tpope/vim-sensible'
+
+" Syntax
+Plug 'w0rp/ale'
+
+" Language Server
+Plug 'neoclide/coc.nvim'
+
+" Useful
+Plug 'thiagoalessio/rainbow_levels.vim'
+Plug 'junegunn/vim-easy-align'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'easymotion/vim-easymotion'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-surround'
+Plug 'andrewradev/splitjoin.vim'
+Plug 'preservim/tagbar'
+Plug 'markonm/traces.vim'
+Plug 'wakatime/vim-wakatime'
+Plug 'guns/xterm-color-table.vim'
+
+" Status Line
+Plug 'mengelbrecht/lightline-bufferline'
+Plug 'itchyny/lightline.vim'
+
+" filetype fish
+Plug 'dag/vim-fish', { 'for': 'conf' }
+
+" filetype .editorconfig
+Plug 'editorconfig/editorconfig-vim', { 'for': 'editorconfig' }
+
+" filetype javascript 
+Plug 'moll/vim-node', { 'for': 'javascript' }
+Plug 'isruslan/vim-es6', { 'for': 'javascript' }
+Plug 'prettier/vim-prettier', { 'for': 'javascript' }
+
+" filetype css / scss
+Plug 'prettier/vim-prettier', { 'for': 'css' }
+Plug 'prettier/vim-prettier', { 'for': 'scss' }
+
+" filetype json
+Plug 'prettier/vim-prettier', { 'for': 'json' }
+
+" filetype rust
+Plug 'rust-lang/rust.vim', { 'for': 'rust' }
+
+" filetype toml
+Plug 'cespare/vim-toml', { 'for': 'toml' }
+
+" filetype haskell
+Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
+Plug 'vim-scripts/alex.vim', { 'for': 'rcpgen'}
+Plug 'andy-morris/happy.vim', { 'for': 'yacc' }
+
+Plug '~/work/vim-madlib'
+
+call plug#end()
+
 " oh syntax, oh yes
 syntax on
 
 " add haskell?
 let $PATH = $PATH . ':' . expand('~/.cabal/bin')
-
-" nnoremap <c-z> <nop>
-" map <C-z> :NERDTreeToggle<CR>
 
 " show line numbers
 set nu
@@ -19,8 +78,9 @@ set autoindent
 set nosmartindent
 " ignore case
 set ic
-" show a highlight under the cursor line
-set cursorline
+
+" cursorline
+hi CursorLine gui=underline cterm=underline ctermfg=None guifg=None
 " we use lightline
 set noshowmode
 " set undofile
@@ -31,13 +91,11 @@ set rtp+=/usr/local/opt/fzf
 " turn off dumb typescript errors in valid JS files
 let g:ale_linters = {'javascript': ['eslint']}
 
-" map ,ic :s/^////g<CR>:let @/ = ""<CR>
-" ,rc doesn't work reliably here:
-" map ,rc :s/^////g<CR>:let @/ = ""<CR>
-" so we use vim-commentary
-
 " for vim-commentary
 autocmd FileType js setlocal commentstring=//\ %s
+autocmd FileType hs setlocal commentstring=--\ %s
+autocmd FileType rpcgen setlocal commentstring=--\ %s
+
 " for .md as markdown
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 " for syntax highlighting in fenced markdown
@@ -89,22 +147,16 @@ function! Log(text)
   " :.-1s/\v^((\s*).*$\n)/\1\2a:text\r/
 endfunction
 
-" log hook
-" nnoremap log :<C-u>call Log()<CR>
-
-" " vim-javascript
-" augroup javascript_folding
-"     au!
-"     au FileType javascript setlocal foldmethod=syntax
-" augroup END
-
-" add JSDoc generation support
-nnoremap jsd :<C-u>call JSDocAdd()<CR>
-
 " set foldmethod=syntax
 set foldcolumn=1
 let javaScript_fold=1
 set foldlevelstart=99
+
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
 
 " <Leader>f{char} to move to {char}
 map  <Leader>f <Plug>(easymotion-bd-f)
@@ -129,7 +181,6 @@ set backspace=indent,eol,start
 " hi! RainbowLevel0 ctermbg=none guibg=#444444
 " hi! RainbowLevel1 ctermbg=239 guibg=#383838
 " hi! RainbowLevel2 ctermbg=238 guibg=#333333
-
 " hi! RainbowLevel3 ctermbg=237 guibg=#282828
 " hi! RainbowLevel4 ctermbg=236 guibg=#222222
 " hi! RainbowLevel5 ctermbg=235 guibg=#181818
@@ -137,15 +188,27 @@ set backspace=indent,eol,start
 " hi! RainbowLevel7 ctermbg=233 guibg=#080808
 " hi! RainbowLevel8 ctermbg=232 guibg=#000000
 
-hi! RainbowLevel0 ctermbg=232 guibg=#000000
-hi! RainbowLevel1 ctermbg=233 guibg=#080808
-hi! RainbowLevel2 ctermbg=234 guibg=#111111
-hi! RainbowLevel3 ctermbg=235 guibg=#222222
+" dark to light
+" hi! RainbowLevel0 ctermbg=232 guibg=#000000
+" hi! RainbowLevel1 ctermbg=233 guibg=#080808
+" hi! RainbowLevel2 ctermbg=234 guibg=#111111
+" hi! RainbowLevel3 ctermbg=235 guibg=#222222
+" hi! RainbowLevel4 ctermbg=236 guibg=#282828
+" hi! RainbowLevel5 ctermbg=237 guibg=#333333
+" hi! RainbowLevel6 ctermbg=238 guibg=#383838
+" hi! RainbowLevel7 ctermbg=239 guibg=#444444
+" hi! RainbowLevel8 ctermbg=none guibg=#ffffff
+
+" nothing on zero, light to dark
+hi! RainbowLevel0 ctermbg=none guibg=none
+hi! RainbowLevel1 ctermbg=239 guibg=#444444
+hi! RainbowLevel2 ctermbg=238 guibg=#383838
+hi! RainbowLevel3 ctermbg=237 guibg=#333333
 hi! RainbowLevel4 ctermbg=236 guibg=#282828
-hi! RainbowLevel5 ctermbg=237 guibg=#333333
-hi! RainbowLevel6 ctermbg=238 guibg=#383838
-hi! RainbowLevel7 ctermbg=239 guibg=#444444
-hi! RainbowLevel8 ctermbg=none guibg=#ffffff
+hi! RainbowLevel5 ctermbg=235 guibg=#222222
+hi! RainbowLevel6 ctermbg=234 guibg=#111111
+hi! RainbowLevel7 ctermbg=233 guibg=#080808
+hi! RainbowLevel8 ctermbg=232 guibg=#000000
 
 " Creating a mapping to turn it on and off:
 map <leader>l :RainbowLevelsToggle<cr>
