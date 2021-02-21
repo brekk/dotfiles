@@ -1,3 +1,4 @@
+brew install fish
 brew install starship
 brew install node
 brew install yarn
