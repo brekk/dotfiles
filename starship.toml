@@ -27,5 +27,6 @@ progress_divider = "⭄ "
 
 [time]
 style = "magenta"
+use_12hr = false
 disabled = false
-format = "%I:%M%p"
+time_format = "%I:%M%p"

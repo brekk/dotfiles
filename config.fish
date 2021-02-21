@@ -66,16 +66,16 @@ end
 
 
 # meta utilities
-if available tmux
+if not functions -q tmux
   alias whodat="tmux ls"
   alias sup="tmux attach -t"
   alias peace="tmux detach"
 end
-if available bat
+if not functions -q bat
   alias ccat="cat"
   alias cat="bat --tabs=2"
 end
-if available exa
+if not functions -q exa
   alias ls=exa
   alias ll='exa --all --long --header --grid --ignore-glob="*.un~|*node_modules|*.git*" --git-ignore'
   alias lx='exa --all --long --header --grid --ignore-glob="*.un~|*node_modules"'
@@ -122,7 +122,7 @@ set PATH $HOME/.local/bin $PATH
 # fun
 
 function figfont
-  figlet -l | sort -R | head -1
+  ls /usr/local/Cellar/figlet/2.2.5/share/figlet/fonts | rg 'flf' | sort -R | head -1 | cut -d'.' -f1
 end
 
 function figtext
