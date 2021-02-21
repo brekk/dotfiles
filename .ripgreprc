@@ -1,0 +1,33 @@
+# mdx
+--type-add
+mdx:*.{mdx}
+
+# limit width and show preview
+--max-columns=200
+--max-columns-preview
+
+# add css style
+--type-add
+style:*.{css,less,scss}
+
+# add mdx
+--type-add
+mdx:*.{mdx}
+
+# add madlib
+--type-add
+mad:*.{mad,outrage}
+
+# exclude vendor crap
+--iglob
+!**/vendor/**
+--iglob
+!vendor/*.js
+
+# fuck off, lockfiles
+--iglob
+!**/yarn.lock
+--iglob
+!**/package-lock.json
+
+--smart-case
