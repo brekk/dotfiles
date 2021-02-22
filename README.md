@@ -17,6 +17,10 @@
    ```shell
    fish link-and-copy.fish
    ```
+5. set up vim-plug:
+   ```shell
+   fish vim-setup.fish
+   ```
 5. install all the fisher plugins:
    ```
    fish fisher-plugins.fish
