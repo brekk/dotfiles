@@ -7,6 +7,10 @@ echo "node.js - ☊"
 brew install node
 echo "yarn - 🧶"
 brew install yarn
+echo "fnm - 🐡"
+brew install fnm
+mkdir -p ~/.config/fish/conf.d
+echo "fnm env | source" > ~/.config/fish/conf.d/fnm.fish
 echo "bat - 🦇"
 brew install bat
 echo "fd - 🔍"
@@ -19,3 +23,5 @@ echo "thefuck - 💢"
 brew install thefuck
 echo "nvim - 📝"
 brew install nvim
+echo "graphviz - 📈"
+brew install graphviz

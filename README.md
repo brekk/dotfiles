@@ -1,8 +1,8 @@
 # dotfiles for brekk
 
-1. install `brew`:
+1. install `brew` and other curl-ables:
    ```bash
-   ./install-brew.sh
+   ./curl-install.sh
    ```
 2. install things with `brew`:
    ```bash
