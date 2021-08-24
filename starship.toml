@@ -5,7 +5,7 @@ add_newline = false
 style = "cyan"
 
 [character]
-symbol = '↳ '
+success_symbol = '[↳](bold cyan)'
 
 [[battery.display]]
 threshold = 20
@@ -21,9 +21,8 @@ symbol = "🌱  "
 
 [git_state]
 rebase = "REBASING 😎"
-merging = "MERGING 🥳"
-reverting = "REVERTING 😓"
-progress_divider = "⭄ "
+merge = "MERGING 🥳"
+revert = "REVERTING 😓"
 
 [time]
 style = "magenta"
