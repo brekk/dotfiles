@@ -6,6 +6,12 @@
 # /// \\\\\\\///// \\/////// \\/// \\/// \
 # \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
+# BREW
+set PATH /opt/homebrew/bin $PATH
+
+# FNM
+set PATH /Users/brekk/.fnm $PATH
+fnm env | source
 
 # fisher
 if not functions -q fisher
