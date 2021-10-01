@@ -42,13 +42,13 @@ alias vi="nvim"
 # the best editor on the planet
 
 # alias vivify="vi ~/work/dotfiles/.vimrc"
-alias nivify="ni ~/work/dotfiles/nvim-init.vim"
+alias nivify="ni ~/.config/nvim/init.vim"
 alias vivify="nivify"
 
 # git
 
 alias gs="git status"
-alias branch="git branch | grep '*' | lsnang -P 'split(C._) | last'"
+alias branch="git branch | grep '*' | snang -P 'split(C._) | last'"
 alias gitpurty="git log --oneline --decorate --graph"
 alias flush="git push --set-upstream origin $branch --force-with-lease"
 
@@ -123,12 +123,17 @@ set PATH $HOME/.cabal/bin $PATH
 set PATH $HOME/.local/bin $PATH
 
 ## make sure you have tetanus
-#source $HOME/.cargo/env
+# source $HOME/.cargo/env
+set PATH $HOME/.cargo/bin $PATH
+
+
+set -x GOPATH $HOME/go
+set -x PATH $PATH /usr/local/go/bin $GOPATH/bin
 
 # fun
 
 function figfont
-  ls /usr/local/Cellar/figlet/2.2.5/share/figlet/fonts | rg 'flf' | sort -R | head -1 | cut -d'.' -f1
+  figlet -l | sort -R | head -1
 end
 
 function figtext
@@ -189,3 +194,20 @@ end
 # ghcup-env
 set -q GHCUP_INSTALL_BASE_PREFIX[1]; or set GHCUP_INSTALL_BASE_PREFIX $HOME
 test -f /Users/brekkbockrath/.ghcup/env ; and set -gx PATH $HOME/.cabal/bin /Users/brekkbockrath/.ghcup/bin $PATH
+
+function kaldiff --description 'compare shit'
+  git difftool -y -t Kaleidoscope $argv[1] $argv[2]
+end
+
+source ~/.iterm2_shell_integration.(basename $SHELL)
+
+function gitsplit --description 'checkout a fresh copy'
+  git checkout $argv[1]
+  git pull
+  git checkout -b $argv[2]
+end
+
+alias mastersplit='gitsplit master'
+
+alias 'tofix'="snang -P 'lines | filter(includes(\'both modified\')) | map(split(C._)) | map(filter(I)) | map(last) | join(C._)'"
+alias squeal='docker exec -it ironfish_postgres psql -U postgres'

@@ -16,7 +16,8 @@ Plug 'tpope/vim-sensible'
 Plug 'w0rp/ale'
 
 " Language Server
-Plug 'neoclide/coc.nvim'
+Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': 'yarn install --frozen-lockfile'}
+
 
 " Useful
 Plug 'thiagoalessio/rainbow_levels.vim'
@@ -32,6 +33,8 @@ Plug 'wakatime/vim-wakatime'
 Plug 'guns/xterm-color-table.vim'
 Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary' }
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
+Plug 'junegunn/seoul256.vim'
+Plug 'wadackel/vim-dogrun'
 
 " Status Line
 Plug 'mengelbrecht/lightline-bufferline'
@@ -48,7 +51,9 @@ Plug 'moll/vim-node', { 'for': 'javascript' }
 Plug 'isruslan/vim-es6', { 'for': 'javascript' }
 
 " filetype typescript
-Plug 'leafgarland/typescript-vim'
+" Plug 'Quramy/tsuquyomi', { 'for': 'typescript' }
+Plug 'HerringtonDarkholme/yats.vim', { 'for': 'typescript' }
+Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
 
 " filetype typescriptreact 
 Plug 'peitalin/vim-jsx-typescript'
@@ -65,7 +70,7 @@ Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
 Plug 'vim-scripts/alex.vim', { 'for': 'rcpgen'}
 Plug 'andy-morris/happy.vim', { 'for': 'yacc' }
 
-Plug '~/work/vim-madlib'
+Plug 'madlib-lang/vim-madlib'
 
 call plug#end()
 
@@ -102,6 +107,7 @@ let g:ale_linters = {'javascript': ['eslint']}
 autocmd FileType js setlocal commentstring=//\ %s
 autocmd FileType hs setlocal commentstring=--\ %s
 autocmd FileType rpcgen setlocal commentstring=--\ %s
+autocmd FileType madlib setlocal commentstring=//\ %s
 
 " for .md as markdown
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
@@ -221,7 +227,7 @@ hi! RainbowLevel8 ctermbg=232 guibg=#000000
 map <leader>l :RainbowLevelsToggle<cr>
 
 " Or automatically turning it on for certain file types:
-au FileType javascript,json,yaml :RainbowLevelsOn
+au FileType typescriptreact,typescript,javascript,json,yaml :RainbowLevelsOn
 
 " ###### CoC is a terrible name but it's dope af
 
@@ -304,8 +310,9 @@ nnoremap <leader>te :call CocActionAsync('runCommand', 'jest.singleTest')<CR>
 command! JestInit :call CocActionAsync('runCommand', 'jest.init')
 
 " ###### lightline
+" \ 'colorscheme': 'seoul256',
 let g:lightline = {
-      \ 'colorscheme': 'seoul256',
+      \ 'colorscheme': 'dogrun',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'cocstatus', 'currentfunction', 'gitbranch', 'readonly', 'filename', 'modified' ] ]
@@ -336,3 +343,20 @@ set laststatus=2
 set history=10000
 
 let g:clap_layout = { 'relative': 'editor' }
+let g:clap_theme = 'dogrun'
+
+
+" colorscheme dogrun
+
+" hi Normal guibg=NONE ctermbg=NONE
+
+" via https://github.com/markonm/traces.vim/blob/master/plugin/traces.vim#L109-L111
+" hi! Search ctermbg=52 guibg=#520000;
+hi Search cterm=NONE ctermfg=52 ctermbg=227;
+
+" Customized science
+" Grep quickly
+nnoremap <leader>gr <cmd>Clap grep2<cr>
+" Log lint-safely
+command -nargs=1 Clog :normal! i /* eslint-disable-next-line no-console */<cr>console.log({<args>})
+
