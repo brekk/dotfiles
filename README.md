@@ -10,7 +10,7 @@
    ```
 3. now you have `fish`, make it the default shell:
    ```bash
-   echo /usr/local/bin/fish | sudo tee -a /etc/shell
+   echo /usr/local/bin/fish | sudo tee -a /etc/shells
    chsh -s /usr/local/bin/fish
    ```
 4. run the copier:

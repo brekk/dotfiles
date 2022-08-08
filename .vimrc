@@ -10,7 +10,7 @@ Plug 'tpope/vim-sensible'
 Plug 'w0rp/ale'
 
 " Language Server
-Plug 'neoclide/coc.nvim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Useful
 Plug 'thiagoalessio/rainbow_levels.vim'
@@ -22,7 +22,6 @@ Plug 'tpope/vim-surround'
 Plug 'andrewradev/splitjoin.vim'
 Plug 'preservim/tagbar'
 Plug 'markonm/traces.vim'
-Plug 'wakatime/vim-wakatime'
 Plug 'guns/xterm-color-table.vim'
 
 " Status Line
